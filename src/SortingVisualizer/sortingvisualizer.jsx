@@ -1,7 +1,8 @@
 import React from 'react';
 import {getMergeSortAnimations} from '../Algorithms/merge-sort';
 import {getBubbleSortAnimations} from '../Algorithms/bubble-sort';
-import {getQuickSortAnimations, doQuickSort} from '../Algorithms/quick-sort';
+import {getQuickSortAnimations} from '../Algorithms/quick-sort';
+import {getInsertionSortAnimations} from '../Algorithms/insertion-sort';
 import './sortingvisualizer.css';
 
 // Change this value for the speed of the animations.
@@ -80,7 +81,7 @@ export default class SortingVisualizer extends React.Component {
     }
   }
 
-  quickSort(speed) {
+  quickSort() {
     const array = this.state.array;
     const animations = getQuickSortAnimations(array);
     console.log(animations);
@@ -104,8 +105,24 @@ export default class SortingVisualizer extends React.Component {
 
     }
 
-  heapSort() {
-    // We leave it as an exercise to the viewer of this code to implement this method.
+  insertionSort() {
+    const array = this.state.array;
+    const animations = getInsertionSortAnimations(array);
+    console.log(animations);
+    const arrayBars = document.getElementsByClassName("array-bar");
+    for(let i = 0; i < animations.length; i++){
+      setTimeout(() => {
+      let [Old, New ] = animations[i];
+
+      let oldBarStyle = arrayBars[Old].style;
+      
+      array[Old] = New;  
+
+      oldBarStyle.height = `${array[Old]}px`;
+      
+
+      }, i * ANIMATION_SPEED_MS)
+    }
   }
 
   bubbleSort() {
@@ -153,47 +170,45 @@ export default class SortingVisualizer extends React.Component {
   // this method will be broken.
 
 
-  testSortingAlgorithms() {
-    for (let i = 0; i < 100; i++) {
-      const array = [];
-      const length = randomIntFromInterval(1, 1000);
-      for (let i = 0; i < length; i++) {
-        array.push(randomIntFromInterval(-1000, 1000));
-      }
-      const javaScriptSortedArray = array.slice().sort((a, b) => a - b);
-      // const mergeSortedArray = getMergeSortAnimations(array.slice());
-      // const bubbleSortedArray = doBubbleSort(array.slice());
-      const quickSortedArray = doQuickSort(array.slice());
-      console.log(arraysAreEqual(javaScriptSortedArray, quickSortedArray));
-    }
-  }
+  // testSortingAlgorithms() {
+  //   for (let i = 0; i < 100; i++) {
+  //     const array = [];
+  //     const length = randomIntFromInterval(1, 1000);
+  //     for (let i = 0; i < length; i++) {
+  //       array.push(randomIntFromInterval(-1000, 1000));
+  //     }
+  //     const javaScriptSortedArray = array.slice().sort((a, b) => a - b);
+  //     // const mergeSortedArray = getMergeSortAnimations(array.slice());
+  //     // const bubbleSortedArray = doBubbleSort(array.slice());
+  //     // const quickSortedArray = doQuickSort(array.slice());
+  //     const InsertionSortArray = doInsertionSort(array.slice());
+  //     console.log(arraysAreEqual(javaScriptSortedArray, InsertionSortArray));
+  //   }
+  // }
 
   render() {
-    const {array,isRunning} = this.state;
+    const {array} = this.state;
 
-    
-    
-    const color = isRunning ? "rgba(214, 29, 29, 0.8)" : "white";
-
-    const cursor = isRunning ? "auto" : "pointer";
 
     return (
-      <div>
+      <div >
         <div className="buttons">
+        
         <input
           id="changeSize"
           type="range"
           min="5"
           max="100"
-          style={{background: color, cursor: cursor}}
+          style={{cursor: "pointer"}}
           // disabled={isRunning ? "disabled" : null}
           onChange={this.handleChange}
-          />
-        <button onClick={() => this.resetArray(array.length)} >Generate New Array</button>
+        />
+        <button className="reset" onClick={() => this.resetArray(array.length)} >Generate New Array</button>
+        <div className='line'></div>
         <button onClick={() => this.bubbleSort()}>Bubble Sort</button>
         <button onClick={() => this.mergeSort()}>Merge Sort</button>
         <button onClick={() => this.quickSort()}>Quick Sort</button>
-        
+        <button onClick={() => this.insertionSort()}>Insertion Sort</button>
         {/* <button onClick={() => this.testSortingAlgorithms()}>
           Test Sorting Algorithms (BROKEN)
         </button> */}

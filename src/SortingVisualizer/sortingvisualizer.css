@@ -26,12 +26,14 @@ body {
   }
 
   .buttons{
+    display: flex;
     background-color:grey;
     padding: 20px;
   }
     
   input {
     left: 5px;
+    margin-left: 20px;
   }
 
   button {
@@ -46,4 +48,17 @@ body {
 
   button:hover {
     color:black;
+  }
+
+  .reset {
+    background-color:brown;
+    margin-left: 20px;
+  }
+
+  .line {
+    width: 2px;
+    height: 55px;
+    background-color: black;
+    margin-left: 30px;
+    margin-right: 30px;
   }
